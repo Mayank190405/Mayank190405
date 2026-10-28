@@ -1,0 +1,156 @@
+<svg viewBox="0 0 900 320" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191715" />
+      <stop offset="50%" stop-color="#141311" />
+      <stop offset="100%" stop-color="#100F0E" />
+    </linearGradient>
+
+    <!-- Warm Terracotta Gradient -->
+    <linearGradient id="terracottaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97757" />
+      <stop offset="50%" stop-color="#E89275" />
+      <stop offset="100%" stop-color="#C25E3E" />
+    </linearGradient>
+
+    <!-- Border Glow -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3D362E" />
+      <stop offset="50%" stop-color="#6E5042" />
+      <stop offset="100%" stop-color="#2D2924" />
+    </linearGradient>
+
+    <!-- Ambient Radial Glow -->
+    <radialGradient id="ambientGlow" cx="80%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#D97757" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#D97757" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="accentGlow" cx="20%" cy="80%" r="40%">
+      <stop offset="0%" stop-color="#C25E3E" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#191715" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <style>
+    .font-serif { font-family: "Charter", "Iowan Old Style", "Georgia", "Cambria", serif; }
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    @keyframes cursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes waveFlow {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -400; }
+    }
+
+    .pulse-dot {
+      animation: pulseDot 2.8s ease-in-out infinite;
+      transform-origin: 32px 32px;
+    }
+
+    .cursor {
+      animation: cursorBlink 1.05s infinite;
+    }
+
+    .flow-line {
+      stroke-dasharray: 8, 12;
+      animation: waveFlow 18s linear infinite;
+    }
+  </style>
+
+  <!-- Base Card Background -->
+  <rect x="0" y="0" width="900" height="320" rx="20" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="1.5" />
+  
+  <!-- Subtle Ambient Glows -->
+  <rect x="0" y="0" width="900" height="320" rx="20" fill="url(#ambientGlow)" />
+  <rect x="0" y="0" width="900" height="320" rx="20" fill="url(#accentGlow)" />
+
+  <!-- Top Metadata Bar -->
+  <g transform="translate(32, 28)">
+    <!-- Terminal Indicators -->
+    <circle cx="0" cy="4" r="5" fill="#D97757" opacity="0.9" class="pulse-dot" />
+    <circle cx="16" cy="4" r="5" fill="#3D362E" />
+    <circle cx="32" cy="4" r="5" fill="#2D2924" />
+
+    <!-- System Badge -->
+    <rect x="56" y="-8" width="220" height="24" rx="12" fill="#23201C" stroke="#3D362E" stroke-width="1" />
+    <text x="70" y="8" fill="#D97757" class="font-mono" font-size="11" font-weight="600">claude-core :: session_01</text>
+
+    <!-- Location & Status -->
+    <text x="836" y="8" text-anchor="end" fill="#8C8277" class="font-mono" font-size="11">
+      Nashik, IN <tspan fill="#D97757">•</tspan> UTC+05:30 <tspan fill="#5A524A">|</tspan> Online
+    </text>
+  </g>
+
+  <!-- Decorative Subtle Grid Lines -->
+  <line x1="32" y1="64" x2="868" y2="64" stroke="#2B2621" stroke-width="1" />
+  <line x1="32" y1="250" x2="868" y2="250" stroke="#2B2621" stroke-width="1" />
+
+  <!-- Decorative Dynamic Signal Wave -->
+  <path d="M 540 64 Q 630 110 720 70 T 868 90" fill="none" stroke="#D97757" stroke-opacity="0.25" stroke-width="1.5" class="flow-line" />
+  <path d="M 500 130 Q 610 80 720 140 T 868 115" fill="none" stroke="#C25E3E" stroke-opacity="0.18" stroke-width="1.5" class="flow-line" />
+
+  <!-- Main Hero Content -->
+  <g transform="translate(42, 118)">
+    <!-- Role Prefix -->
+    <text x="0" y="0" fill="#D97757" class="font-mono" font-size="12" letter-spacing="2.5" font-weight="600">
+      SYSTEM ARCHITECT &amp; GENAI DEVELOPER
+    </text>
+
+    <!-- Name Heading (Claude Serif Style) -->
+    <text x="0" y="44" fill="#FAF6EE" class="font-serif" font-size="44" font-weight="600" letter-spacing="-0.5">
+      Mayank Bajaj
+    </text>
+
+    <!-- Bio / Mission Tagline -->
+    <text x="0" y="78" fill="#B3AAA0" class="font-sans" font-size="14.5" font-weight="400">
+      Engineering resilient distributed backends, LLM workflows, and intelligent SaaS systems.
+    </text>
+
+    <!-- Live Command Prompt Simulation -->
+    <g transform="translate(0, 98)">
+      <text x="0" y="16" fill="#7A7167" class="font-mono" font-size="12">
+        <tspan fill="#D97757">mayank@agi-backend</tspan>:<tspan fill="#8C8277">~</tspan>$ query --stack="FastAPI + LangChain + Redis + VectorDB"
+      </text>
+      <rect x="495" y="4" width="7" height="15" fill="#D97757" class="cursor" />
+    </g>
+  </g>
+
+  <!-- Bottom Metric Badges (Claude Pill Aesthetics) -->
+  <g transform="translate(42, 266)">
+    <!-- Pill 1: Architecture -->
+    <rect x="0" y="0" width="170" height="34" rx="8" fill="#1F1D1A" stroke="#332D26" stroke-width="1" />
+    <text x="14" y="21" fill="#756D64" class="font-mono" font-size="10.5">01 // </text>
+    <text x="44" y="21" fill="#FAF6EE" class="font-sans" font-size="12" font-weight="500">Autonomous Agents</text>
+
+    <!-- Pill 2: High Throughput -->
+    <rect x="182" y="0" width="180" height="34" rx="8" fill="#1F1D1A" stroke="#332D26" stroke-width="1" />
+    <text x="196" y="21" fill="#756D64" class="font-mono" font-size="10.5">02 // </text>
+    <text x="226" y="21" fill="#FAF6EE" class="font-sans" font-size="12" font-weight="500">FastAPI &amp; Microservices</text>
+
+    <!-- Pill 3: Distributed State -->
+    <rect x="374" y="0" width="165" height="34" rx="8" fill="#1F1D1A" stroke="#332D26" stroke-width="1" />
+    <text x="388" y="21" fill="#756D64" class="font-mono" font-size="10.5">03 // </text>
+    <text x="418" y="21" fill="#FAF6EE" class="font-sans" font-size="12" font-weight="500">RAG &amp; Vector Stores</text>
+
+    <!-- Pill 4: Production CRM -->
+    <rect x="551" y="0" width="150" height="34" rx="8" fill="#1F1D1A" stroke="#332D26" stroke-width="1" />
+    <text x="565" y="21" fill="#756D64" class="font-mono" font-size="10.5">04 // </text>
+    <text x="595" y="21" fill="#FAF6EE" class="font-sans" font-size="12" font-weight="500">Full-Cycle SaaS</text>
+
+    <!-- Pill 5: Status -->
+    <rect x="713" y="0" width="145" height="34" rx="8" fill="#251F1B" stroke="#663A29" stroke-width="1" />
+    <circle cx="729" cy="17" r="4" fill="#D97757" />
+    <text x="741" y="21" fill="#E89275" class="font-mono" font-size="11.5" font-weight="600">Open to Collab</text>
+  </g>
+</svg>
