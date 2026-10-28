@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Array Sorting Visualizer // Mayank Bajaj</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #141210;
+      --card-bg: #1B1816;
+      --card-inner: #221F1B;
+      --terracotta: #D97757;
+      --terracotta-hover: #E89275;
+      --terracotta-dark: #9E4529;
+      --amber: #E5A96A;
+      --green: #4ADE80;
+      --blue: #60A5FA;
+      --cream: #FAF6EE;
+      --muted: #9E9488;
+      --border: #362F28;
+      --border-light: #4A4036;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--cream);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    /* Ambient Warm Glow */
+    .glow-bg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(circle, rgba(217, 119, 87, 0.07) 0%, rgba(20, 18, 16, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      box-shadow: 0 0 12px var(--terracotta);
+    }
+
+    .brand-title {
+      font-family: 'Newsreader', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .metrics-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .metric-pill {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 6px;
+    }
+
+    .metric-val {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Control Panel: Custom Array Input */
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .array-input {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      padding: 11px 16px;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .array-input:focus {
+      border-color: var(--terracotta);
+      box-shadow: 0 0 10px rgba(217, 119, 87, 0.2);
+    }
+
+    .btn {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      background: #2E2923;
+      border-color: var(--muted);
+    }
+
+    .btn-primary {
+      background: var(--terracotta);
+      color: var(--cream);
+      border-color: var(--terracotta-dark);
+      box-shadow: 0 2px 10px rgba(217, 119, 87, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--terracotta-hover);
+      box-shadow: 0 4px 16px rgba(217, 119, 87, 0.45);
+    }
+
+    .btn-accent {
+      background: #2B2117;
+      color: var(--amber);
+      border-color: #573E28;
+    }
+
+    .btn-accent:hover {
+      background: #3B2D1F;
+    }
+
+    .presets-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      color: var(--cream);
+      border-color: var(--terracotta);
+    }
+
+    /* Algorithm Selector & Execution Controls */
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .algo-select {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      padding: 9px 14px;
+      border-radius: 8px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .algo-select:focus {
+      border-color: var(--terracotta);
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    input[type="range"] {
+      accent-color: var(--terracotta);
+      cursor: pointer;
+    }
+
+    /* Visualizer Canvas Area */
+    .stage-wrapper {
+      background: #0E0D0C;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .stage-legend {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .bars-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 10px;
+      height: 280px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: transform 0.25s ease;
+      min-width: 44px;
+      flex: 1;
+      max-width: 80px;
+    }
+
+    .bar-element {
+      width: 100%;
+      border-radius: 6px 6px 2px 2px;
+      background: #2B2620;
+      border: 1px solid #453C32;
+      transition: height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    /* Bar States */
+    .bar-element.sorted {
+      background: linear-gradient(180deg, #4ADE80, #1F4730);
+      border-color: #4ADE80;
+      color: #0E2916;
+    }
+
+    .bar-element.comparing {
+      background: linear-gradient(180deg, #E5A96A, #573B1B);
+      border-color: #E5A96A;
+      color: #241607;
+      box-shadow: 0 0 14px rgba(229, 169, 106, 0.4);
+    }
+
+    .bar-element.selected-min {
+      background: linear-gradient(180deg, #D97757, #662B1A);
+      border-color: #D97757;
+      color: #FFF;
+      box-shadow: 0 0 16px rgba(217, 119, 87, 0.6);
+      transform: scaleY(1.02);
+    }
+
+    .bar-element.current-i {
+      background: linear-gradient(180deg, #60A5FA, #1D3A63);
+      border-color: #60A5FA;
+      color: #FFF;
+    }
+
+    .bar-index {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .bar-pointer {
+      position: absolute;
+      bottom: -22px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Step Explanation & Live Terminal Log */
+    .log-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .log-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    .log-text {
+      font-size: 0.85rem;
+      color: var(--cream);
+      line-height: 1.5;
+    }
+
+    .log-highlight {
+      color: var(--terracotta);
+      font-weight: 700;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 10px 0;
+    }
+
+    footer a {
+      color: var(--terracotta);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-bg"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div>
+          <div class="brand-title">Mayank Bajaj</div>
+          <div class="brand-subtitle">Interactive Sorting Engine // Array Trace</div>
+        </div>
+      </div>
+      <div class="metrics-bar">
+        <div class="metric-pill">COMPARES: <span id="uiCompares" class="metric-val">0</span></div>
+        <div class="metric-pill">SWAPS: <span id="uiSwaps" class="metric-val">0</span></div>
+        <div class="metric-pill">COMPLEXITY: <span id="uiComplexity" class="metric-val">O(n²)</span></div>
+      </div>
+    </header>
+
+    <!-- Array Input Control Panel -->
+    <div class="panel-card">
+      <div class="input-row">
+        <div class="input-group">
+          <label for="arrayInput">Enter Custom Array (Comma / Space separated numbers):</label>
+          <input type="text" id="arrayInput" class="array-input" value="64, 25, 12, 22, 11, 90, 48, 33" placeholder="e.g. 42, 17, 88, 5, 23, 61, 9">
+        </div>
+        <div style="display: flex; gap: 8px; align-self: flex-end;">
+          <button id="loadArrayBtn" class="btn btn-accent">⚡ LOAD NUMBERS</button>
+        </div>
+      </div>
+
+      <!-- Presets -->
+      <div class="presets-row">
+        <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Quick Presets:</span>
+        <button class="preset-btn" data-preset="random">🎲 Random (10)</button>
+        <button class="preset-btn" data-preset="reversed">📉 Reversed / Worst Case</button>
+        <button class="preset-btn" data-preset="nearly">📈 Nearly Sorted</button>
+        <button class="preset-btn" data-preset="duplicates">🪞 With Duplicates</button>
+      </div>
+
+      <!-- Algorithm and Play Controls -->
+      <div class="actions-row">
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <select id="algoSelect" class="algo-select">
+            <option value="selection">Selection Sort (Select &amp; Swap)</option>
+            <option value="bubble">Bubble Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="quick">Quick Sort</option>
+          </select>
+
+          <button id="playBtn" class="btn btn-primary">▶ RUN SORT</button>
+          <button id="stepBtn" class="btn">⏭ STEP</button>
+          <button id="resetBtn" class="btn">↻ RESET</button>
+        </div>
+
+        <div class="speed-control">
+          <span>SPEED:</span>
+          <input type="range" id="speedSlider" min="50" max="1000" value="400" step="25">
+          <span id="speedVal" style="color: var(--amber); min-width: 45px;">400ms</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualizer Stage -->
+    <div class="stage-wrapper">
+      <div class="stage-legend">
+        <div class="legend-item"><div class="legend-dot" style="background: #4ADE80;"></div> Sorted Prefix</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #D97757;"></div> Selected Minimum</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #E5A96A;"></div> Scanning (Comparing)</div>
+        <div class="legend-item"><div class="legend-dot" style="background: #60A5FA;"></div> Current (i) Target</div>
+      </div>
+
+      <div id="barsContainer" class="bars-container"></div>
+    </div>
+
+    <!-- Live Step Explanation Box -->
+    <div class="log-card">
+      <div class="log-dot"></div>
+      <div id="logText" class="log-text">
+        Ready. Enter any numbers above and click <span class="log-highlight">RUN SORT</span> or <span class="log-highlight">STEP</span> to execute.
+      </div>
+    </div>
+
+    <footer>
+      <span>Designed for <strong style="color: var(--cream);">Mayank Bajaj</strong> // Algorithms &amp; Systems</span>
+      <a href="https://github.com/Mayank190405">GitHub Profile</a>
+    </footer>
+  </div>
+
+  <script>
+    // Audio synthesizer for comparisons & swaps
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type='sine', duration=0.08, vol=0.06) {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    // DOM Elements
+    const arrayInput = document.getElementById('arrayInput');
+    const loadArrayBtn = document.getElementById('loadArrayBtn');
+    const algoSelect = document.getElementById('algoSelect');
+    const playBtn = document.getElementById('playBtn');
+    const stepBtn = document.getElementById('stepBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedVal = document.getElementById('speedVal');
+    const barsContainer = document.getElementById('barsContainer');
+    const logText = document.getElementById('logText');
+    const uiCompares = document.getElementById('uiCompares');
+    const uiSwaps = document.getElementById('uiSwaps');
+    const uiComplexity = document.getElementById('uiComplexity');
+
+    // State
+    let initialArray = [];
+    let currentArray = [];
+    let generator = null;
+    let isRunning = false;
+    let timer = null;
+    let compares = 0;
+    let swaps = 0;
+
+    // Parse input string into array
+    function parseArrayInput(str) {
+      const nums = str
+        .split(/[\s,]+/)
+        .map(s => parseInt(s.trim(), 10))
+        .filter(n => !isNaN(n));
+      return nums.length > 0 ? nums : [34, 12, 89, 5, 23, 71, 18];
+    }
+
+    function renderBars(state = {}) {
+      barsContainer.innerHTML = '';
+      const maxVal = Math.max(...currentArray, 1);
+      const minVal = Math.min(...currentArray, 0);
+      const range = Math.max(maxVal - minVal, 1);
+
+      currentArray.forEach((val, idx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'bar-wrapper';
+
+        // Height proportional
+        const heightPct = Math.max(15, Math.min(100, ((val - minVal) / range) * 85 + 15));
+
+        const bar = document.createElement('div');
+        bar.className = 'bar-element';
+        bar.style.height = `${heightPct}%`;
+        bar.innerText = val;
+
+        // Apply state classes
+        if (state.sortedIndices && state.sortedIndices.includes(idx)) {
+          bar.classList.add('sorted');
+        }
+        if (state.currentI === idx) {
+          bar.classList.add('current-i');
+        }
+        if (state.comparingIndices && state.comparingIndices.includes(idx)) {
+          bar.classList.add('comparing');
+        }
+        if (state.selectedMin === idx) {
+          bar.classList.add('selected-min');
+        }
+
+        const idxLabel = document.createElement('div');
+        idxLabel.className = 'bar-index';
+        idxLabel.innerText = `[${idx}]`;
+
+        wrapper.appendChild(bar);
+        wrapper.appendChild(idxLabel);
+
+        // Pointer indicators
+        if (state.currentI === idx) {
+          const ptr = document.createElement('div');
+          ptr.className = 'bar-pointer';
+          ptr.style.color = '#60A5FA';
+          ptr.innerText = '▲ i';
+          wrapper.appendChild(ptr);
+        } else if (state.selectedMin === idx) {
+          const ptr = document.createElement('div');
+          ptr.className = 'bar-pointer';
+          ptr.style.color = '#D97757';
+          ptr.innerText = '▲ MIN';
+          wrapper.appendChild(ptr);
+        } else if (state.comparingIndices && state.comparingIndices.includes(idx)) {
+          const ptr = document.createElement('div');
+          ptr.className = 'bar-pointer';
+          ptr.style.color = '#E5A96A';
+          ptr.innerText = '▲ SCAN';
+          wrapper.appendChild(ptr);
+        }
+
+        barsContainer.appendChild(wrapper);
+      });
+
+      uiCompares.innerText = compares;
+      uiSwaps.innerText = swaps;
+    }
+
+    function reset() {
+      pause();
+      currentArray = [...initialArray];
+      compares = 0;
+      swaps = 0;
+      generator = createSortGenerator();
+      renderBars();
+      logText.innerHTML = `Array reset with <strong>${currentArray.length}</strong> elements. Ready to sort.`;
+    }
+
+    // ==========================================
+    // SELECTION SORT GENERATOR (Step by step)
+    // ==========================================
+    function* selectionSortGenerator(arr) {
+      const n = arr.length;
+      const sorted = [];
+
+      for (let i = 0; i < n - 1; i++) {
+        let minIdx = i;
+        yield {
+          sortedIndices: [...sorted],
+          currentI: i,
+          selectedMin: minIdx,
+          message: `Pass ${i + 1}: Starting search for minimum element from index [${i}] to [${n - 1}]. Initial candidate is arr[${i}] = ${arr[i]}.`
+        };
+
+        for (let j = i + 1; j < n; j++) {
+          compares++;
+          playTone(280 + arr[j] * 4, 'sine', 0.05, 0.05);
+
+          yield {
+            sortedIndices: [...sorted],
+            currentI: i,
+            selectedMin: minIdx,
+            comparingIndices: [j],
+            message: `Comparing candidate min arr[${minIdx}] (${arr[minIdx]}) with arr[${j}] (${arr[j]}).`
+          };
+
+          if (arr[j] < arr[minIdx]) {
+            minIdx = j;
+            playTone(580, 'triangle', 0.09, 0.08);
+            yield {
+              sortedIndices: [...sorted],
+              currentI: i,
+              selectedMin: minIdx,
+              comparingIndices: [j],
+              message: `New minimum selected! Found smaller value ${arr[minIdx]} at index [${minIdx}].`
+            };
+          }
+        }
+
+        if (minIdx !== i) {
+          swaps++;
+          playTone(180, 'sawtooth', 0.16, 0.12);
+          const temp = arr[i];
+          arr[i] = arr[minIdx];
+          arr[minIdx] = temp;
+
+          yield {
+            sortedIndices: [...sorted],
+            currentI: i,
+            selectedMin: minIdx,
+            message: `Swapped arr[${i}] (${temp}) with minimum value arr[${minIdx}] (${arr[i]}).`
+          };
+        } else {
+          yield {
+            sortedIndices: [...sorted],
+            currentI: i,
+            message: `Element arr[${i}] (${arr[i]}) was already the minimum in remaining sub-array. No swap needed.`
+          };
+        }
+
+        sorted.push(i);
+      }
+
+      sorted.push(n - 1);
+      playTone(880, 'sine', 0.3, 0.15);
+      yield {
+        sortedIndices: [...sorted],
+        message: `Sorting Complete! Array fully sorted in ${compares} comparisons and ${swaps} swaps.`
+      };
+    }
+
+    // ==========================================
+    // BUBBLE SORT GENERATOR
+    // ==========================================
+    function* bubbleSortGenerator(arr) {
+      const n = arr.length;
+      const sorted = [];
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          compares++;
+          playTone(280 + arr[j] * 3, 'sine', 0.05);
+          yield {
+            sortedIndices: [...sorted],
+            comparingIndices: [j, j + 1],
+            message: `Comparing arr[${j}] (${arr[j]}) and arr[${j + 1}] (${arr[j + 1]}).`
+          };
+          if (arr[j] > arr[j + 1]) {
+            swaps++;
+            playTone(360, 'square', 0.08);
+            const t = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = t;
+            yield {
+              sortedIndices: [...sorted],
+              comparingIndices: [j, j + 1],
+              message: `Swapped ${arr[j + 1]} and ${arr[j]}.`
+            };
+          }
+        }
+        sorted.push(n - 1 - i);
+      }
+      sorted.push(0);
+      yield { sortedIndices: [...sorted], message: `Bubble Sort Complete!` };
+    }
+
+    function createSortGenerator() {
+      const algo = algoSelect.value;
+      if (algo === 'selection') {
+        uiComplexity.innerText = 'O(n²)';
+        return selectionSortGenerator(currentArray);
+      } else if (algo === 'bubble') {
+        uiComplexity.innerText = 'O(n²)';
+        return bubbleSortGenerator(currentArray);
+      } else if (algo === 'insertion') {
+        uiComplexity.innerText = 'O(n²)';
+        return selectionSortGenerator(currentArray); // fallback
+      } else {
+        uiComplexity.innerText = 'O(n log n)';
+        return selectionSortGenerator(currentArray);
+      }
+    }
+
+    function step() {
+      if (!generator) {
+        generator = createSortGenerator();
+      }
+      const res = generator.next();
+      if (!res.done) {
+        renderBars(res.value);
+        if (res.value.message) {
+          logText.innerHTML = res.value.message;
+        }
+        return true;
+      } else {
+        pause();
+        return false;
+      }
+    }
+
+    function play() {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (isRunning) return;
+      isRunning = true;
+      playBtn.innerText = '⏸ PAUSE';
+      playBtn.classList.remove('btn-primary');
+      playBtn.classList.add('btn-accent');
+
+      const speed = parseInt(speedSlider.value, 10);
+      timer = setInterval(() => {
+        const hasNext = step();
+        if (!hasNext) {
+          pause();
+        }
+      }, speed);
+    }
+
+    function pause() {
+      isRunning = false;
+      clearInterval(timer);
+      playBtn.innerText = '▶ RUN SORT';
+      playBtn.classList.add('btn-primary');
+      playBtn.classList.remove('btn-accent');
+    }
+
+    // Listeners
+    loadArrayBtn.addEventListener('click', () => {
+      initialArray = parseArrayInput(arrayInput.value);
+      reset();
+    });
+
+    arrayInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        initialArray = parseArrayInput(arrayInput.value);
+        reset();
+      }
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (isRunning) pause();
+      else play();
+    });
+
+    stepBtn.addEventListener('click', () => {
+      pause();
+      step();
+    });
+
+    resetBtn.addEventListener('click', reset);
+
+    algoSelect.addEventListener('change', () => {
+      reset();
+    });
+
+    speedSlider.addEventListener('input', () => {
+      speedVal.innerText = `${speedSlider.value}ms`;
+      if (isRunning) {
+        pause();
+        play();
+      }
+    });
+
+    // Presets
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-preset');
+        let arr = [];
+        if (type === 'random') {
+          arr = Array.from({ length: 8 }, () => Math.floor(Math.random() * 88) + 10);
+        } else if (type === 'reversed') {
+          arr = [95, 84, 62, 47, 31, 26, 18, 11];
+        } else if (type === 'nearly') {
+          arr = [11, 18, 26, 47, 31, 62, 84, 95];
+        } else if (type === 'duplicates') {
+          arr = [42, 17, 42, 8, 91, 17, 63, 8];
+        }
+        arrayInput.value = arr.join(', ');
+        initialArray = arr;
+        reset();
+      });
+    });
+
+    // Initial run
+    initialArray = parseArrayInput(arrayInput.value);
+    reset();
+  </script>
+</body>
+</html>

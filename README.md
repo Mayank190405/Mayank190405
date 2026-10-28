@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://mayank190405.github.io/game/"><img src="https://img.shields.io/badge/🕹️%20Play%20Arcade%20Game-System%20Defense%20Runner-D97757?style=for-the-badge&logoColor=white" alt="Play Game"></a>
+  <a href="https://mayank190405.github.io/visualizer/"><img src="https://img.shields.io/badge/⚡%20Algorithm%20Visualizer-Selection%20Sort%20Engine-D97757?style=for-the-badge&logoColor=white" alt="Algorithm Visualizer"></a>
   <a href="mailto:mayankbajaj773@gmail.com"><img src="https://img.shields.io/badge/Contact-Direct%20Dispatch-2B2621?style=for-the-badge&logo=gmail&logoColor=D97757" alt="Email"></a>
   <a href="https://github.com/Mayank190405"><img src="https://img.shields.io/badge/GitHub-@Mayank190405-2B2621?style=for-the-badge&logo=github&logoColor=FAF6EE" alt="GitHub"></a>
   <img src="https://img.shields.io/badge/Location-Nashik%20(UTC+5:30)-2B2621?style=for-the-badge&logoColor=D97757" alt="Location">
@@ -11,23 +11,37 @@
 
 ---
 
-### 🕹️ The Interactive Arcade // Prompt Defender
+### ⚡ Interactive Algorithm Engine // Selection Sort Trace
 
-> **System Test:** Intercept failing HTTP 500 requests, catch memory leaks, and collect RAG embeddings & Redis tokens before production cascades.
+> **Array Selection Invariant:** For each pass `i` from `0` to `n-1`, find the minimum element in unsorted sub-array `A[i..n-1]` and swap it into its final sorted position `A[i]`.
 
 <p align="center">
-  <a href="https://mayank190405.github.io/game/">
-    <img src="./assets/mini-game-arcade.svg" alt="Prompt Defender Mini Game" width="100%" />
+  <a href="https://mayank190405.github.io/visualizer/">
+    <img src="./assets/sorting-visualizer.svg" alt="Selection Sort Algorithm Visualizer" width="100%" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://mayank190405.github.io/game/">
-    <strong>▶ [CLICK TO LAUNCH FULL PLAYABLE VERSION IN BROWSER]</strong>
+  <a href="https://mayank190405.github.io/visualizer/">
+    <strong>▶ [LAUNCH INTERACTIVE VISUALIZER: INPUT YOUR OWN NUMBERS & SORT]</strong>
   </a>
   <br>
-  <sub>Includes synthesized Web Audio API sound effects, dynamic wave scaling, and mobile touch support.</sub>
+  <sub>Features custom array entry, step-by-step pointers, Web Audio frequency synthesis, and live metric tracking.</sub>
 </p>
+
+```python
+def selection_sort(arr: list[int]) -> list[int]:
+    """Selects and sorts minimum elements in-place: O(n²) time, O(1) space."""
+    n = len(arr)
+    for i in range(n - 1):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        if min_idx != i:
+            arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+```
 
 ---
 
