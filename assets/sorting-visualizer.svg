@@ -80,10 +80,10 @@
   <g transform="translate(36, 32)">
     <circle cx="6" cy="6" r="4" fill="#D97757" />
     <text x="22" y="10" fill="#FAF6EE" class="font-serif" font-size="20" font-weight="600">
-      Selection Sort Visualizer <tspan fill="#D97757" font-style="italic">//</tspan> Array: 8208363287
+      Selection Sort Visualizer <tspan fill="#D97757" font-style="italic">//</tspan> Number: 8208363287
     </text>
     <text x="868" y="10" text-anchor="end" fill="#8C8176" class="font-mono" font-size="11">
-      PHONE DIGIT SORT TRACE (10 INDICES: [0..9])
+      ARRAY GENERATED: [8,2,0,8,3,6,3,2,8,7]
     </text>
   </g>
 

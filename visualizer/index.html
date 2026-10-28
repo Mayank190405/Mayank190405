@@ -475,21 +475,31 @@
     <div class="panel-card">
       <div class="input-row">
         <div class="input-group">
-          <label for="arrayInput">Enter Custom Array (Default: Mayank's Number 8208363287):</label>
+          <label for="arrayInput">Array Digits / Phone Number:</label>
           <input type="text" id="arrayInput" class="array-input" value="8, 2, 0, 8, 3, 6, 3, 2, 8, 7" placeholder="e.g. 8, 2, 0, 8, 3, 6, 3, 2, 8, 7">
         </div>
-        <div style="display: flex; gap: 8px; align-self: flex-end;">
-          <button id="loadArrayBtn" class="btn btn-accent">⚡ LOAD NUMBERS</button>
+        <div style="display: flex; gap: 8px; align-self: flex-end; flex-wrap: wrap;">
+          <button id="generateNumBtn" class="btn btn-primary" title="Generate a new 10-digit number for this array">🎲 GENERATE NUMBER</button>
+          <button id="loadArrayBtn" class="btn btn-accent">⚡ LOAD ARRAY</button>
         </div>
       </div>
 
-      <!-- Presets -->
+      <!-- Real-time Number Display Box -->
+      <div style="display: flex; gap: 16px; align-items: center; padding: 10px 14px; background: var(--card-inner); border-radius: 8px; border: 1px solid var(--border); font-size: 0.8rem; flex-wrap: wrap;">
+        <div><span style="color: var(--muted);">SOURCE NUMBER:</span> <strong id="rawNumDisplay" style="color: var(--cream); letter-spacing: 1px;">8208363287</strong></div>
+        <div style="color: var(--border);">|</div>
+        <div><span style="color: var(--muted);">CURRENT ARRAY VALUE:</span> <strong id="currentNumDisplay" style="color: var(--amber); letter-spacing: 1px;">8208363287</strong></div>
+        <div style="color: var(--border);">|</div>
+        <div><span style="color: var(--muted);">TARGET SORTED:</span> <strong id="targetNumDisplay" style="color: var(--green); letter-spacing: 1px;">0223367888</strong></div>
+      </div>
+
+      <!-- Presets & Generators -->
       <div class="presets-row">
-        <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Quick Presets:</span>
+        <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Generator Modes:</span>
         <button class="preset-btn" data-preset="phone" style="border-color: var(--terracotta); color: var(--cream);">📱 Phone: 8208363287</button>
-        <button class="preset-btn" data-preset="digits">🔢 Digits 0 to 9 Unsorted</button>
-        <button class="preset-btn" data-preset="random">🎲 Random (10)</button>
-        <button class="preset-btn" data-preset="reversed">📉 Reversed</button>
+        <button class="preset-btn" data-preset="gen-random-10">🎲 Gen Random 10-Digit Phone</button>
+        <button class="preset-btn" data-preset="digits">🔢 Gen All Digits 0 to 9 (Shuffled)</button>
+        <button class="preset-btn" data-preset="reversed">📉 Worst Case (9 down to 0)</button>
       </div>
 
       <!-- Algorithm and Play Controls -->
@@ -563,6 +573,10 @@
     // DOM Elements
     const arrayInput = document.getElementById('arrayInput');
     const loadArrayBtn = document.getElementById('loadArrayBtn');
+    const generateNumBtn = document.getElementById('generateNumBtn');
+    const rawNumDisplay = document.getElementById('rawNumDisplay');
+    const currentNumDisplay = document.getElementById('currentNumDisplay');
+    const targetNumDisplay = document.getElementById('targetNumDisplay');
     const algoSelect = document.getElementById('algoSelect');
     const playBtn = document.getElementById('playBtn');
     const stepBtn = document.getElementById('stepBtn');
@@ -574,6 +588,14 @@
     const uiCompares = document.getElementById('uiCompares');
     const uiSwaps = document.getElementById('uiSwaps');
     const uiComplexity = document.getElementById('uiComplexity');
+
+    // Helper: generate 10-digit number
+    function generate10DigitNumber() {
+      // Valid-looking 10 digit number starting with 6-9 or random
+      const first = Math.floor(Math.random() * 4) + 6; // 6,7,8,9
+      const rest = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+      return [first, ...rest];
+    }
 
     // State
     let initialArray = [];
@@ -658,6 +680,9 @@
 
       uiCompares.innerText = compares;
       uiSwaps.innerText = swaps;
+      if (currentNumDisplay) {
+        currentNumDisplay.innerText = currentArray.join('');
+      }
     }
 
     function reset() {
@@ -667,7 +692,14 @@
       swaps = 0;
       generator = createSortGenerator();
       renderBars();
-      logText.innerHTML = `Array reset with <strong>${currentArray.length}</strong> elements. Ready to sort.`;
+      
+      const rawStr = initialArray.join('');
+      const sortedStr = [...initialArray].sort((a, b) => a - b).join('');
+      if (rawNumDisplay) rawNumDisplay.innerText = rawStr;
+      if (currentNumDisplay) currentNumDisplay.innerText = rawStr;
+      if (targetNumDisplay) targetNumDisplay.innerText = sortedStr;
+
+      logText.innerHTML = `Array loaded with <strong>${currentArray.length}</strong> numbers (Value: <span class="log-highlight">${rawStr}</span>). Target sorted: <span style="color: var(--green);">${sortedStr}</span>.`;
     }
 
     // ==========================================
@@ -875,6 +907,14 @@
       }
     });
 
+    generateNumBtn.addEventListener('click', () => {
+      const arr = generate10DigitNumber();
+      arrayInput.value = arr.join(', ');
+      initialArray = arr;
+      reset();
+      playTone(660, 'sine', 0.15, 0.1);
+    });
+
     // Presets
     document.querySelectorAll('.preset-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -882,10 +922,10 @@
         let arr = [];
         if (type === 'phone') {
           arr = [8, 2, 0, 8, 3, 6, 3, 2, 8, 7];
+        } else if (type === 'gen-random-10') {
+          arr = generate10DigitNumber();
         } else if (type === 'digits') {
           arr = [9, 3, 7, 0, 8, 2, 5, 1, 4, 6];
-        } else if (type === 'random') {
-          arr = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10));
         } else if (type === 'reversed') {
           arr = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
         }
