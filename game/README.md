@@ -1,6 +1,6 @@
 # 🕹️ Prompt Defender — Browser Mini Game
 
-A retro-futuristic arcade game designed for **Mayank Bajaj's** GitHub profile, styled with **Anthropic Claude's** signature dark charcoal and warm terracotta aesthetic.
+A retro-futuristic arcade game designed for **Mayank Bajaj's** GitHub profile, styled with warm terracotta, gold, and dark stone tones.
 
 ## How to Enable 1-Click Play on GitHub Pages
 
@@ -8,7 +8,7 @@ A retro-futuristic arcade game designed for **Mayank Bajaj's** GitHub profile, s
 2. Go to **Settings** > **Pages**.
 3. Under **Build and deployment** > **Branch**:
    - Select `main` branch.
-   - Select `/ (root)` or `/game` as the folder (or use GitHub Pages action).
+   - Select `/ (root)` or `/game` as the folder.
 4. Your game will be live instantly at:
    `https://mayank190405.github.io/game/`
 

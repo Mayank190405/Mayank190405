@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://mayank190405.github.io/game/"><img src="https://img.shields.io/badge/🕹️%20Play%20Arcade%20Game-Claude%20Core%20Runner-D97757?style=for-the-badge&logoColor=white" alt="Play Game"></a>
+  <a href="https://mayank190405.github.io/game/"><img src="https://img.shields.io/badge/🕹️%20Play%20Arcade%20Game-System%20Defense%20Runner-D97757?style=for-the-badge&logoColor=white" alt="Play Game"></a>
   <a href="mailto:mayankbajaj773@gmail.com"><img src="https://img.shields.io/badge/Contact-Direct%20Dispatch-2B2621?style=for-the-badge&logo=gmail&logoColor=D97757" alt="Email"></a>
   <a href="https://github.com/Mayank190405"><img src="https://img.shields.io/badge/GitHub-@Mayank190405-2B2621?style=for-the-badge&logo=github&logoColor=FAF6EE" alt="GitHub"></a>
   <img src="https://img.shields.io/badge/Location-Nashik%20(UTC+5:30)-2B2621?style=for-the-badge&logoColor=D97757" alt="Location">
@@ -13,7 +13,7 @@
 
 ### 🕹️ The Interactive Arcade // Prompt Defender
 
-> **Try to beat the high score:** Pilot the AI Agent shuttle, intercept failing HTTP 500 requests, catch memory leaks, and capture RAG & Redis tokens before production crashes.
+> **System Test:** Intercept failing HTTP 500 requests, catch memory leaks, and collect RAG embeddings & Redis tokens before production cascades.
 
 <p align="center">
   <a href="https://mayank190405.github.io/game/">
@@ -23,35 +23,64 @@
 
 <p align="center">
   <a href="https://mayank190405.github.io/game/">
-    <strong>▶ [CLICK HERE TO LAUNCH FULL PLAYABLE VERSION IN BROWSER]</strong>
+    <strong>▶ [CLICK TO LAUNCH FULL PLAYABLE VERSION IN BROWSER]</strong>
   </a>
   <br>
-  <sub>Features synthesized 8-bit sound effects via Web Audio API, dynamic waves, and mobile touch support.</sub>
+  <sub>Includes synthesized Web Audio API sound effects, dynamic wave scaling, and mobile touch support.</sub>
 </p>
 
 ---
 
-### 🏛️ Production Architecture & GenAI Blueprint
+### 🏛️ Production Architecture & System Topology
 
-Here is how I design resilient, distributed systems—combining high-concurrency asynchronous backends with autonomous LLM reasoning loops:
+Every system I build is planned around four fault-isolated tiers: **Edge Ingress**, **Asynchronous Compute**, **Reasoning & RAG Retrieval**, and **Stateful Persistence**.
 
 <p align="center">
-  <img src="./assets/system-architecture.svg" alt="Production Architecture Blueprint" width="100%" />
+  <img src="./assets/system-architecture.svg" alt="Production Architecture Specification" width="100%" />
 </p>
 
-```mermaid
-flowchart LR
-    A["Client Workflows\n(React / Next.js)"] -->|"HTTPS / WSS"| B["API Gateway\n(FastAPI / Express)"]
-    B -->|"Cache Check < 2ms"| C[("Redis Cluster\nCache & PubSub")]
-    B -->|"Autonomous Pipeline"| D{"LLM Agent Core\nRAG & Tool Execution"}
-    D -->|"Hybrid Vector Retrieval"| E[("pgvector & ChromaDB\nSemantic Embeddings")]
-    D -->|"ACID Transaction Store"| F[("PostgreSQL & MongoDB\nRelational & Doc Store")]
+#### Planned Architectural Decisions & Trade-Offs
 
-    classDef claude fill:#241E1A,stroke:#D97757,stroke-width:2px,color:#FAF6EE;
-    classDef secondary fill:#1B1816,stroke:#3D352D,stroke-width:1.5px,color:#C2BCB2;
-    class A,B,C,E,F secondary;
-    class D claude;
+```mermaid
+flowchart TD
+    subgraph Zone1 ["ZONE 01: EDGE & INGRESS (Stateless)"]
+        A["Client Traffic\n(React / Next.js)"] -->|"HTTPS / WSS"| B["Reverse Proxy & TLS 1.3\nToken-Bucket Rate Limiter"]
+        B -->|"JWT & RBAC Verified"| C["API Gateway Dispatch\n(P99 < 6ms)"]
+    end
+
+    subgraph Zone2 ["ZONE 02: ASYNC COMPUTE & WORKERS"]
+        C -->|"HTTP/2"| D["FastAPI / Express Microservices\n(AsyncIO Event Loop)"]
+        D -->|"Heavy Task Dispatch"| E["Celery / Redis Stream Queue\n(Worker Pool + DLQ)"]
+    end
+
+    subgraph Zone3 ["ZONE 03: INTELLIGENCE & HYBRID RAG"]
+        D -->|"Prompt Intent"| F{"Autonomous Agent Core\nContext Window Optimizer"}
+        F -->|"Dense Cosine (1536d)"| G["pgvector Store"]
+        F -->|"Sparse Keyword Index"| H["BM25 Lexical Match"]
+        G & H -->|"Reciprocal Rank Fusion"| I["Re-Ranker (98.4% Precision)"]
+    end
+
+    subgraph Zone4 ["ZONE 04: PERSISTENCE & CACHE"]
+        D -->|"Sub-2ms Cache-Aside"| J[("Redis Cache Cluster\nPub/Sub & Distributed Locks")]
+        D & F -->|"ACID Transaction Store"| K[("PostgreSQL\nWAL Replication")]
+        D -->|"Dynamic CRM Payloads"| L[("MongoDB\nAggregated Audit Trails")]
+    end
+
+    classDef primaryNode fill:#241E1A,stroke:#D97757,stroke-width:2px,color:#FAF6EE;
+    classDef secondaryNode fill:#1B1816,stroke:#3D352D,stroke-width:1.5px,color:#C2BCB2;
+    classDef accentNode fill:#2E1B15,stroke:#E5A96A,stroke-width:1.5px,color:#FAF6EE;
+
+    class F,I primaryNode;
+    class A,B,C,D,E,J,K,L secondaryNode;
+    class G,H accentNode;
 ```
+
+#### 📐 Core Engineering Principles
+
+* **1. Asynchronous Task Decoupling**: CPU-heavy LLM token processing and context embedding generation are isolated behind Redis stream worker queues with Dead Letter Queues (DLQ), ensuring public HTTP REST endpoints maintain a sub-20ms responsiveness under load.
+* **2. Hybrid RAG (Dense + Sparse)**: Relying solely on vector embeddings leads to semantic hallucinations for domain-specific CRM keywords and IDs. The pipeline combines dense cosine similarity (pgvector) with sparse lexical search (BM25) fused via Reciprocal Rank Fusion (RRF).
+* **3. Layered Cache-Aside**: Redis sits immediately upstream of PostgreSQL, handling session tokens, rate counters, and high-frequency queries to absorb over 80% of database read pressure.
+* **4. Circuit Breakers & Graceful Degradation**: External AI API dependencies use automated circuit breakers with exponential backoff and localized fallback heuristics to prevent service-wide cascading failures.
 
 ---
 

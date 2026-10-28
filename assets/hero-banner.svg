@@ -84,7 +84,7 @@
 
     <!-- System Badge -->
     <rect x="56" y="-8" width="220" height="24" rx="12" fill="#23201C" stroke="#3D362E" stroke-width="1" />
-    <text x="70" y="8" fill="#D97757" class="font-mono" font-size="11" font-weight="600">claude-core :: session_01</text>
+    <text x="70" y="8" fill="#D97757" class="font-mono" font-size="11" font-weight="600">kernel-core :: session_01</text>
 
     <!-- Location & Status -->
     <text x="836" y="8" text-anchor="end" fill="#8C8277" class="font-mono" font-size="11">
@@ -107,7 +107,7 @@
       SYSTEM ARCHITECT &amp; GENAI DEVELOPER
     </text>
 
-    <!-- Name Heading (Claude Serif Style) -->
+    <!-- Name Heading (Serif Style) -->
     <text x="0" y="44" fill="#FAF6EE" class="font-serif" font-size="44" font-weight="600" letter-spacing="-0.5">
       Mayank Bajaj
     </text>
@@ -126,7 +126,7 @@
     </g>
   </g>
 
-  <!-- Bottom Metric Badges (Claude Pill Aesthetics) -->
+  <!-- Bottom Metric Badges (Pill Aesthetics) -->
   <g transform="translate(42, 266)">
     <!-- Pill 1: Architecture -->
     <rect x="0" y="0" width="170" height="34" rx="8" fill="#1F1D1A" stroke="#332D26" stroke-width="1" />
