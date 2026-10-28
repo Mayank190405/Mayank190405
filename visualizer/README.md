@@ -19,3 +19,4 @@ An interactive algorithm visualization engine designed for **Mayank Bajaj's** Gi
    - Folder: `/ (root)` or `/visualizer`.
 4. Your visualizer will be live at:
    `https://mayank190405.github.io/visualizer/`
+

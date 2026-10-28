@@ -13,34 +13,35 @@
 
 ### ⚡ Interactive Algorithm Engine // Selection Sort Trace
 
-> **Array Selection Invariant:** For each pass `i` from `0` to `n-1`, find the minimum element in unsorted sub-array `A[i..n-1]` and swap it into its final sorted position `A[i]`.
+> **Live Phone Digit Sort:** Taking the 10 digits of my contact number (`8208363287`) and sorting all indices `0` through `9` into ascending sequence:  
+> `[8, 2, 0, 8, 3, 6, 3, 2, 8, 7]` ➔ `[0, 2, 2, 3, 3, 6, 7, 8, 8, 8]`
 
 <p align="center">
   <a href="https://mayank190405.github.io/visualizer/">
-    <img src="./assets/sorting-visualizer.svg" alt="Selection Sort Algorithm Visualizer" width="100%" />
+    <img src="./assets/sorting-visualizer.svg" alt="Selection Sort Algorithm Visualizer: 8208363287" width="100%" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://mayank190405.github.io/visualizer/">
-    <strong>▶ [LAUNCH INTERACTIVE VISUALIZER: INPUT YOUR OWN NUMBERS & SORT]</strong>
+    <strong>▶ [LAUNCH INTERACTIVE VISUALIZER: STEP-SORT ANY ARRAY]</strong>
   </a>
   <br>
-  <sub>Features custom array entry, step-by-step pointers, Web Audio frequency synthesis, and live metric tracking.</sub>
+  <sub>Preloaded with <code>8208363287</code>. Features custom array input, step-by-step min selection, Web Audio tone synthesis, and live metric tracking.</sub>
 </p>
 
 ```python
-def selection_sort(arr: list[int]) -> list[int]:
-    """Selects and sorts minimum elements in-place: O(n²) time, O(1) space."""
-    n = len(arr)
+def selection_sort_phone(digits: list[int] = [8, 2, 0, 8, 3, 6, 3, 2, 8, 7]) -> list[int]:
+    """Selects and sorts phone digits across indices 0 to 9 in sequence."""
+    n = len(digits)
     for i in range(n - 1):
         min_idx = i
         for j in range(i + 1, n):
-            if arr[j] < arr[min_idx]:
+            if digits[j] < digits[min_idx]:
                 min_idx = j
         if min_idx != i:
-            arr[i], arr[min_idx] = arr[min_idx], arr[i]
-    return arr
+            digits[i], digits[min_idx] = digits[min_idx], digits[i]
+    return digits  # Output: [0, 2, 2, 3, 3, 6, 7, 8, 8, 8]
 ```
 
 ---

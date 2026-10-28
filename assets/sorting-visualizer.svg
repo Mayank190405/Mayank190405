@@ -1,40 +1,42 @@
-<svg viewBox="0 0 900 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 940 470" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <!-- Background Gradient -->
     <linearGradient id="sortBg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#181614" />
-      <stop offset="50%" stop-color="#13110F" />
+      <stop offset="60%" stop-color="#13110F" />
       <stop offset="100%" stop-color="#0E0D0C" />
     </linearGradient>
 
+    <!-- Card Fill -->
+    <linearGradient id="cardFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#221E1A" />
+      <stop offset="100%" stop-color="#181513" />
+    </linearGradient>
+
     <!-- Bar Gradients -->
-    <!-- Sorted Bar (Emerald Green) -->
     <linearGradient id="sortedBar" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#1F4730" />
+      <stop offset="0%" stop-color="#1B422B" />
       <stop offset="100%" stop-color="#4ADE80" />
     </linearGradient>
 
-    <!-- Selected Minimum Bar (Terracotta Accent) -->
-    <linearGradient id="selectedBar" x1="0%" y1="100%" x2="0%" y2="0%">
+    <linearGradient id="minBar" x1="0%" y1="100%" x2="0%" y2="0%">
       <stop offset="0%" stop-color="#73321E" />
       <stop offset="100%" stop-color="#D97757" />
     </linearGradient>
 
-    <!-- Comparing Scan Bar (Warm Amber) -->
-    <linearGradient id="comparingBar" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#6E4A1E" />
+    <linearGradient id="targetBar" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#5E4018" />
       <stop offset="100%" stop-color="#E5A96A" />
     </linearGradient>
 
-    <!-- Unsorted Bar (Neutral Stone) -->
     <linearGradient id="unsortedBar" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#231F1C" />
+      <stop offset="0%" stop-color="#25211D" />
       <stop offset="100%" stop-color="#3D362F" />
     </linearGradient>
 
-    <!-- Glow Filter -->
-    <filter id="pointerGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
+    <!-- Glow -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
@@ -44,169 +46,265 @@
     .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     .font-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
 
-    /* Animated Scanning Cursor */
     @keyframes scanAcross {
       0% { transform: translateX(0px); opacity: 0; }
       15% { transform: translateX(0px); opacity: 1; }
-      30% { transform: translateX(96px); opacity: 1; }
-      45% { transform: translateX(192px); opacity: 1; }
-      60% { transform: translateX(288px); opacity: 1; }
-      75% { transform: translateX(384px); opacity: 1; }
-      85% { transform: translateX(480px); opacity: 1; }
-      95%, 100% { transform: translateX(480px); opacity: 0; }
+      30% { transform: translateX(54px); opacity: 1; }
+      45% { transform: translateX(108px); opacity: 1; }
+      60% { transform: translateX(162px); opacity: 1; }
+      75% { transform: translateX(216px); opacity: 1; }
+      90%, 100% { transform: translateX(270px); opacity: 0; }
     }
 
-    /* Swap Arc Pulse */
     @keyframes swapPulse {
-      0%, 40% { stroke-dashoffset: 600; opacity: 0; }
-      50% { opacity: 1; }
-      85% { stroke-dashoffset: 0; opacity: 1; }
+      0%, 35% { stroke-dashoffset: 450; opacity: 0; }
+      45% { opacity: 1; }
+      80% { stroke-dashoffset: 0; opacity: 1; }
       95%, 100% { opacity: 0; }
     }
 
-    /* Selected Min Pulse */
-    @keyframes minIndicator {
+    @keyframes pulseMin {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-4px); }
     }
 
-    .scanner { animation: scanAcross 6s ease-in-out infinite; }
-    .swap-arc { stroke-dasharray: 600; animation: swapPulse 6s ease-in-out infinite; }
-    .min-arrow { animation: minIndicator 1.8s ease-in-out infinite; }
+    .scanner { animation: scanAcross 5s ease-in-out infinite; }
+    .swap-arc { stroke-dasharray: 450; animation: swapPulse 5s ease-in-out infinite; }
+    .min-pulse { animation: pulseMin 1.6s ease-in-out infinite; }
   </style>
 
   <!-- Container Box -->
-  <rect x="0" y="0" width="900" height="420" rx="18" fill="url(#sortBg)" stroke="#38312A" stroke-width="1.5" />
+  <rect x="0" y="0" width="940" height="470" rx="18" fill="url(#sortBg)" stroke="#38312A" stroke-width="1.5" />
 
   <!-- Section Header -->
   <g transform="translate(36, 32)">
     <circle cx="6" cy="6" r="4" fill="#D97757" />
     <text x="22" y="10" fill="#FAF6EE" class="font-serif" font-size="20" font-weight="600">
-      Selection Sort Visualizer <tspan fill="#D97757" font-style="italic">//</tspan> Array Execution Trace
+      Selection Sort Visualizer <tspan fill="#D97757" font-style="italic">//</tspan> Array: 8208363287
     </text>
-    <text x="828" y="10" text-anchor="end" fill="#8C8176" class="font-mono" font-size="11">
-      ALGORITHM: SELECTION_SORT(A, N)
+    <text x="868" y="10" text-anchor="end" fill="#8C8176" class="font-mono" font-size="11">
+      PHONE DIGIT SORT TRACE (10 INDICES: [0..9])
     </text>
   </g>
 
-  <!-- Algorithm Complexity & Runtime Spec Bar -->
+  <!-- Specs Ticker Bar -->
   <g transform="translate(36, 52)">
-    <line x1="0" y1="8" x2="828" y2="8" stroke="#2B2520" stroke-width="1" />
+    <line x1="0" y1="8" x2="868" y2="8" stroke="#2B2520" stroke-width="1" />
     <text x="0" y="24" fill="#7A7065" class="font-mono" font-size="10.5">
-      <tspan fill="#4ADE80">● IN-PLACE</tspan> | TIME: <tspan fill="#E5A96A">O(n²)</tspan> | AUX SPACE: <tspan fill="#4ADE80">O(1)</tspan> | STABLE: <tspan fill="#D97757">NO</tspan> | CURRENT PASS: <tspan fill="#FAF6EE">i = 2 (Selecting minimum in sub-array [2..7])</tspan>
+      <tspan fill="#4ADE80">● INPUT: 8208363287</tspan> | INDICES: <tspan fill="#FAF6EE">0 to 9</tspan> | SORT ORDER: <tspan fill="#E5A96A">ASCENDING</tspan> | TARGET: <tspan fill="#4ADE80">[0, 2, 2, 3, 3, 6, 7, 8, 8, 8]</tspan>
     </text>
   </g>
 
   <!-- ============================================================ -->
-  <!-- MAIN VISUAL ARRAY BARS -->
-  <!-- Array values: [11, 18, 62, 31, 84, 95, 47, 26] -->
-  <!-- Indices 0,1 are sorted (Green). Index 2 (62) is current i. -->
-  <!-- Index 7 (26) is identified as the minimum in unsorted segment! -->
+  <!-- LEFT COLUMN: RAW INPUT PHONE NUMBER & DIGIT BREAKDOWN -->
   <!-- ============================================================ -->
-  <g transform="translate(68, 110)">
+  <g transform="translate(36, 95)">
+    <rect x="0" y="0" width="260" height="300" rx="14" fill="url(#cardFill)" stroke="#3A322A" stroke-width="1.2" />
+    
+    <text x="18" y="26" fill="#8C8176" class="font-mono" font-size="10" font-weight="700">01 // RAW INPUT NUMBER</text>
+    <text x="18" y="58" fill="#FAF6EE" class="font-serif" font-size="24" font-weight="600" letter-spacing="1">
+      8208363287
+    </text>
+    <text x="18" y="78" fill="#D97757" class="font-mono" font-size="11">
+      Mayank's Direct Contact
+    </text>
 
-    <!-- Bar Baseline Axis -->
-    <line x1="0" y1="180" x2="764" y2="180" stroke="#38312A" stroke-width="1.5" />
+    <line x1="18" y1="94" x2="242" y2="94" stroke="#2D2721" stroke-width="1" />
 
-    <!-- ELEMENT 0: Value = 11 (SORTED - Green) -->
-    <g transform="translate(0, 0)">
-      <rect x="0" y="156" width="68" height="24" rx="5" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
-      <text x="34" y="148" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="13" font-weight="700">11</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[0]</text>
-      <text x="34" y="215" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">SORTED</text>
-    </g>
-
-    <!-- ELEMENT 1: Value = 18 (SORTED - Green) -->
-    <g transform="translate(96, 0)">
-      <rect x="0" y="142" width="68" height="38" rx="5" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
-      <text x="34" y="134" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="13" font-weight="700">18</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[1]</text>
-      <text x="34" y="215" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">SORTED</text>
-    </g>
-
-    <!-- Partition Divider Line: separates sorted prefix from unsorted suffix -->
-    <line x1="180" y1="20" x2="180" y2="180" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4,4" />
-    <rect x="170" y="6" width="20" height="14" rx="3" fill="#241E1A" stroke="#523528" stroke-width="1" />
-    <text x="180" y="16" text-anchor="middle" fill="#D97757" class="font-mono" font-size="8">i</text>
-
-    <!-- ELEMENT 2: Value = 62 (CURRENT POSITION 'i' - Preparing for swap) -->
-    <g transform="translate(192, 0)">
-      <rect x="0" y="46" width="68" height="134" rx="5" fill="url(#comparingBar)" stroke="#E5A96A" stroke-width="1.5" />
-      <text x="34" y="38" text-anchor="middle" fill="#E5A96A" class="font-mono" font-size="13" font-weight="700">62</text>
-      <text x="34" y="200" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="11">[2]</text>
-      <rect x="6" y="206" width="56" height="15" rx="3" fill="#2E2319" stroke="#E5A96A" stroke-width="0.8" />
-      <text x="34" y="217" text-anchor="middle" fill="#E5A96A" class="font-mono" font-size="8.5" font-weight="700">CURR (i)</text>
-    </g>
-
-    <!-- ELEMENT 3: Value = 31 (UNSORTED) -->
-    <g transform="translate(288, 0)">
-      <rect x="0" y="114" width="68" height="66" rx="5" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
-      <text x="34" y="106" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="13" font-weight="600">31</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[3]</text>
-    </g>
-
-    <!-- ELEMENT 4: Value = 84 (UNSORTED) -->
-    <g transform="translate(384, 0)">
-      <rect x="0" y="0" width="68" height="180" rx="5" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
-      <text x="34" y="-8" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="13" font-weight="600">84</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[4]</text>
-    </g>
-
-    <!-- ELEMENT 5: Value = 95 (UNSORTED) -->
-    <g transform="translate(480, 0)">
-      <rect x="0" y="-20" width="68" height="200" rx="5" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
-      <text x="34" y="-28" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="13" font-weight="600">95</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[5]</text>
-    </g>
-
-    <!-- ELEMENT 6: Value = 47 (UNSORTED) -->
-    <g transform="translate(576, 0)">
-      <rect x="0" y="80" width="68" height="100" rx="5" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
-      <text x="34" y="72" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="13" font-weight="600">47</text>
-      <text x="34" y="200" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="11">[6]</text>
-    </g>
-
-    <!-- ELEMENT 7: Value = 26 (FOUND MINIMUM! - Terracotta Accent) -->
-    <g transform="translate(672, 0)">
-      <rect x="0" y="124" width="68" height="56" rx="5" fill="url(#selectedBar)" stroke="#D97757" stroke-width="1.8" />
-      <text x="34" y="116" text-anchor="middle" fill="#D97757" class="font-mono" font-size="13" font-weight="700">26</text>
-      <text x="34" y="200" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="11">[7]</text>
-      
-      <!-- Selected Min Tag & Arrow -->
-      <g class="min-arrow">
-        <polygon points="34,228 29,236 39,236" fill="#D97757" />
-        <rect x="2" y="238" width="64" height="16" rx="3" fill="#2E1812" stroke="#D97757" stroke-width="0.8" />
-        <text x="34" y="250" text-anchor="middle" fill="#E89275" class="font-mono" font-size="8.5" font-weight="700">MIN_VAL</text>
+    <!-- Unsorted Array Sequence -->
+    <text x="18" y="116" fill="#8C8176" class="font-mono" font-size="9.5">UNSORTED ARRAY A[0..9]:</text>
+    <g transform="translate(18, 126)">
+      <!-- Render 10 digits in pills -->
+      <g transform="translate(0,0)">
+        <rect x="0" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="9" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">8</text>
+        <rect x="22" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="31" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">2</text>
+        <rect x="44" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="53" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">0</text>
+        <rect x="66" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="75" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">8</text>
+        <rect x="88" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="97" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">3</text>
+        <rect x="110" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="119" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">6</text>
+        <rect x="132" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="141" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">3</text>
+        <rect x="154" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="163" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">2</text>
+        <rect x="176" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="185" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">8</text>
+        <rect x="198" y="0" width="18" height="20" rx="3" fill="#251F1B" stroke="#42372E" /><text x="207" y="14" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">7</text>
       </g>
     </g>
 
-    <!-- Dynamic Scanning Pointer Animation (Moving along unsorted sub-array [2..7]) -->
-    <g class="scanner" transform="translate(192, 0)">
-      <circle cx="34" cy="180" r="5" fill="#E5A96A" filter="url(#pointerGlow)" />
-      <line x1="34" y1="185" x2="34" y2="195" stroke="#E5A96A" stroke-width="2" />
+    <!-- Digit Frequency 0 to 9 Spectrum -->
+    <text x="18" y="176" fill="#8C8176" class="font-mono" font-size="9.5">DIGIT OCCURRENCE (0 TO 9):</text>
+    <g transform="translate(18, 188)">
+      <!-- 0 -->
+      <rect x="0" y="0" width="20" height="22" rx="3" fill="#1C3D26" stroke="#4ADE80" stroke-width="0.8" />
+      <text x="10" y="15" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">0¹</text>
+      <!-- 1 -->
+      <rect x="22" y="0" width="20" height="22" rx="3" fill="#1C1A17" stroke="#332B24" />
+      <text x="32" y="15" text-anchor="middle" fill="#544A40" class="font-mono" font-size="9">1⁰</text>
+      <!-- 2 -->
+      <rect x="44" y="0" width="20" height="22" rx="3" fill="#1C3D26" stroke="#4ADE80" stroke-width="0.8" />
+      <text x="54" y="15" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">2²</text>
+      <!-- 3 -->
+      <rect x="66" y="0" width="20" height="22" rx="3" fill="#1C3D26" stroke="#4ADE80" stroke-width="0.8" />
+      <text x="76" y="15" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">3²</text>
+      <!-- 4 -->
+      <rect x="88" y="0" width="20" height="22" rx="3" fill="#1C1A17" stroke="#332B24" />
+      <text x="98" y="15" text-anchor="middle" fill="#544A40" class="font-mono" font-size="9">4⁰</text>
+      <!-- 5 -->
+      <rect x="110" y="0" width="20" height="22" rx="3" fill="#1C1A17" stroke="#332B24" />
+      <text x="120" y="15" text-anchor="middle" fill="#544A40" class="font-mono" font-size="9">5⁰</text>
+      <!-- 6 -->
+      <rect x="132" y="0" width="20" height="22" rx="3" fill="#1C3D26" stroke="#4ADE80" stroke-width="0.8" />
+      <text x="142" y="15" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">6¹</text>
+      <!-- 7 -->
+      <rect x="154" y="0" width="20" height="22" rx="3" fill="#1C3D26" stroke="#4ADE80" stroke-width="0.8" />
+      <text x="164" y="15" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="9">7¹</text>
+      <!-- 8 -->
+      <rect x="176" y="0" width="20" height="22" rx="3" fill="#3D2118" stroke="#D97757" stroke-width="1.2" />
+      <text x="186" y="15" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="9" font-weight="700">8³</text>
+      <!-- 9 -->
+      <rect x="198" y="0" width="20" height="22" rx="3" fill="#1C1A17" stroke="#332B24" />
+      <text x="208" y="15" text-anchor="middle" fill="#544A40" class="font-mono" font-size="9">9⁰</text>
     </g>
 
-    <!-- Curved Swap Trajectory Arc: Swaps [2] (62) with [7] (26) -->
-    <path d="M 226 25 Q 466 -65 706 100" fill="none" stroke="#D97757" stroke-width="2" stroke-dasharray="6,4" class="swap-arc" />
-    <text x="466" y="-35" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="11" font-weight="600" opacity="0.9">
-      SWAP(A[2]=62, A[7]=26)
-    </text>
+    <line x1="18" y1="228" x2="242" y2="228" stroke="#2D2721" stroke-width="1" />
+
+    <!-- Summary Metrics -->
+    <text x="18" y="250" fill="#ABA297" class="font-mono" font-size="10.5">Length: <tspan fill="#FAF6EE">10 Digits</tspan></text>
+    <text x="18" y="268" fill="#ABA297" class="font-mono" font-size="10.5">Indices: <tspan fill="#E5A96A">0 through 9</tspan></text>
+    <text x="18" y="286" fill="#ABA297" class="font-mono" font-size="10.5">Final: <tspan fill="#4ADE80">0223367888</tspan></text>
   </g>
 
-  <!-- Step Breakdown Ticker Card -->
-  <g transform="translate(36, 350)">
-    <rect x="0" y="0" width="828" height="48" rx="10" fill="#1C1916" stroke="#3A322A" stroke-width="1.2" />
+  <!-- ============================================================ -->
+  <!-- RIGHT COLUMN: VISUAL SORTING BARS FOR ALL 10 INDICES (0 TO 9) -->
+  <!-- Showing Selection Sort at pass i = 4 -->
+  <!-- Array during pass 4: [0, 2, 2, 3, (8), 6, (3), 8, 8, 7] -->
+  <!-- Sorted prefix: [0, 2, 2, 3] at indices 0..3 -->
+  <!-- Current i = 4 (value 8) -->
+  <!-- Minimum in remainder is 3 at index 6! Swapping [4] and [6]! -->
+  <!-- ============================================================ -->
+  <g transform="translate(320, 95)">
+    <rect x="0" y="0" width="584" height="300" rx="14" fill="url(#cardFill)" stroke="#3A322A" stroke-width="1.2" />
     
-    <circle cx="20" cy="24" r="4" fill="#D97757" />
-    <text x="34" y="28" fill="#FAF6EE" class="font-mono" font-size="11.5">
-      <tspan fill="#D97757" font-weight="700">STEP EXPLANATION:</tspan> Scanned indices [2..7]. Found minimum value <tspan fill="#E89275" font-weight="700">26</tspan> at index 7. Swapping with index 2 (<tspan fill="#E5A96A">62</tspan>).
+    <text x="20" y="26" fill="#E5A96A" class="font-mono" font-size="10" font-weight="700">02 // SORTING IN SEQUENCE (ALL 10 INDICES: 0 TO 9)</text>
+
+    <!-- Bar Chart Container -->
+    <g transform="translate(20, 48)">
+      
+      <!-- Baseline Axis -->
+      <line x1="0" y1="160" x2="544" y2="160" stroke="#38312A" stroke-width="1.5" />
+
+      <!-- BAR [0]: Digit = 0 (SORTED) -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="142" width="44" height="18" rx="4" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
+        <text x="22" y="134" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="12" font-weight="700">0</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[0]</text>
+        <text x="22" y="192" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="8">SORT</text>
+      </g>
+
+      <!-- BAR [1]: Digit = 2 (SORTED) -->
+      <g transform="translate(54, 0)">
+        <rect x="0" y="112" width="44" height="48" rx="4" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
+        <text x="22" y="104" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="12" font-weight="700">2</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[1]</text>
+        <text x="22" y="192" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="8">SORT</text>
+      </g>
+
+      <!-- BAR [2]: Digit = 2 (SORTED) -->
+      <g transform="translate(108, 0)">
+        <rect x="0" y="112" width="44" height="48" rx="4" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
+        <text x="22" y="104" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="12" font-weight="700">2</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[2]</text>
+        <text x="22" y="192" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="8">SORT</text>
+      </g>
+
+      <!-- BAR [3]: Digit = 3 (SORTED) -->
+      <g transform="translate(162, 0)">
+        <rect x="0" y="98" width="44" height="62" rx="4" fill="url(#sortedBar)" stroke="#4ADE80" stroke-width="1.2" />
+        <text x="22" y="90" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="12" font-weight="700">3</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[3]</text>
+        <text x="22" y="192" text-anchor="middle" fill="#4ADE80" class="font-mono" font-size="8">SORT</text>
+      </g>
+
+      <!-- Partition Divider: Separates sorted prefix [0..3] from unsorted [4..9] -->
+      <line x1="211" y1="20" x2="211" y2="160" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3,3" />
+
+      <!-- BAR [4]: Digit = 8 (CURRENT POSITION i = 4, target for swap) -->
+      <g transform="translate(216, 0)">
+        <rect x="0" y="24" width="44" height="136" rx="4" fill="url(#targetBar)" stroke="#E5A96A" stroke-width="1.5" />
+        <text x="22" y="16" text-anchor="middle" fill="#E5A96A" class="font-mono" font-size="12" font-weight="700">8</text>
+        <text x="22" y="178" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">[4]</text>
+        <rect x="2" y="184" width="40" height="13" rx="2" fill="#2E2115" stroke="#E5A96A" stroke-width="0.8" />
+        <text x="22" y="193" text-anchor="middle" fill="#E5A96A" class="font-mono" font-size="7.5" font-weight="700">TARGET</text>
+      </g>
+
+      <!-- BAR [5]: Digit = 6 (Unsorted) -->
+      <g transform="translate(270, 0)">
+        <rect x="0" y="54" width="44" height="106" rx="4" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
+        <text x="22" y="46" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="12" font-weight="600">6</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[5]</text>
+      </g>
+
+      <!-- BAR [6]: Digit = 3 (SELECTED MINIMUM in [4..9]!) -->
+      <g transform="translate(324, 0)">
+        <rect x="0" y="98" width="44" height="62" rx="4" fill="url(#minBar)" stroke="#D97757" stroke-width="1.8" />
+        <text x="22" y="90" text-anchor="middle" fill="#D97757" class="font-mono" font-size="12" font-weight="700">3</text>
+        <text x="22" y="178" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10">[6]</text>
+        
+        <g class="min-pulse">
+          <polygon points="22,198 18,204 26,204" fill="#D97757" />
+          <rect x="4" y="205" width="36" height="13" rx="2" fill="#2E1812" stroke="#D97757" stroke-width="0.8" />
+          <text x="22" y="214" text-anchor="middle" fill="#E89275" class="font-mono" font-size="7.5" font-weight="700">MIN</text>
+        </g>
+      </g>
+
+      <!-- BAR [7]: Digit = 8 (Unsorted) -->
+      <g transform="translate(378, 0)">
+        <rect x="0" y="24" width="44" height="136" rx="4" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
+        <text x="22" y="16" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="12" font-weight="600">8</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[7]</text>
+      </g>
+
+      <!-- BAR [8]: Digit = 8 (Unsorted) -->
+      <g transform="translate(432, 0)">
+        <rect x="0" y="24" width="44" height="136" rx="4" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
+        <text x="22" y="16" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="12" font-weight="600">8</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[8]</text>
+      </g>
+
+      <!-- BAR [9]: Digit = 7 (Unsorted) -->
+      <g transform="translate(486, 0)">
+        <rect x="0" y="40" width="44" height="120" rx="4" fill="url(#unsortedBar)" stroke="#4A3F35" stroke-width="1" />
+        <text x="22" y="32" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="12" font-weight="600">7</text>
+        <text x="22" y="178" text-anchor="middle" fill="#6E655B" class="font-mono" font-size="10">[9]</text>
+      </g>
+
+      <!-- Dynamic Scanning Pointer -->
+      <g class="scanner" transform="translate(216, 0)">
+        <circle cx="22" cy="160" r="4.5" fill="#E5A96A" filter="url(#softGlow)" />
+        <line x1="22" y1="165" x2="22" y2="173" stroke="#E5A96A" stroke-width="2" />
+      </g>
+
+      <!-- Curved Swap Trajectory: Swaps [4]=8 with [6]=3 -->
+      <path d="M 238 12 Q 293 -35 346 80" fill="none" stroke="#D97757" stroke-width="2" stroke-dasharray="5,4" class="swap-arc" />
+      <text x="293" y="-18" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="9.5" font-weight="600">
+        SWAP(A[4]=8, A[6]=3)
+      </text>
+    </g>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- BOTTOM STATUS FOOTER -->
+  <!-- ============================================================ -->
+  <g transform="translate(36, 410)">
+    <rect x="0" y="0" width="868" height="42" rx="10" fill="#1C1916" stroke="#3A322A" stroke-width="1.2" />
+    <circle cx="20" cy="21" r="4" fill="#D97757" />
+    <text x="34" y="25" fill="#FAF6EE" class="font-mono" font-size="11">
+      <tspan fill="#D97757" font-weight="700">EXECUTION STEP:</tspan> Selected minimum value <tspan fill="#E89275" font-weight="700">3</tspan> at index [6]. Swapping into position [4] to extend sorted sequence [0..4].
     </text>
 
-    <!-- Action Badge -->
-    <g transform="translate(630, 10)">
+    <!-- Action Link -->
+    <g transform="translate(670, 7)">
       <rect x="0" y="0" width="186" height="28" rx="6" fill="#2E1B15" stroke="#D97757" stroke-width="1" />
       <text x="93" y="18" text-anchor="middle" fill="#FAF6EE" class="font-mono" font-size="10" font-weight="700">
-        ▶ OPEN WEB VISUALIZER ↗
+        ▶ LAUNCH LIVE VISUALIZER ↗
       </text>
     </g>
   </g>

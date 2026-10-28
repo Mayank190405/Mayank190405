@@ -475,8 +475,8 @@
     <div class="panel-card">
       <div class="input-row">
         <div class="input-group">
-          <label for="arrayInput">Enter Custom Array (Comma / Space separated numbers):</label>
-          <input type="text" id="arrayInput" class="array-input" value="64, 25, 12, 22, 11, 90, 48, 33" placeholder="e.g. 42, 17, 88, 5, 23, 61, 9">
+          <label for="arrayInput">Enter Custom Array (Default: Mayank's Number 8208363287):</label>
+          <input type="text" id="arrayInput" class="array-input" value="8, 2, 0, 8, 3, 6, 3, 2, 8, 7" placeholder="e.g. 8, 2, 0, 8, 3, 6, 3, 2, 8, 7">
         </div>
         <div style="display: flex; gap: 8px; align-self: flex-end;">
           <button id="loadArrayBtn" class="btn btn-accent">⚡ LOAD NUMBERS</button>
@@ -486,10 +486,10 @@
       <!-- Presets -->
       <div class="presets-row">
         <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Quick Presets:</span>
+        <button class="preset-btn" data-preset="phone" style="border-color: var(--terracotta); color: var(--cream);">📱 Phone: 8208363287</button>
+        <button class="preset-btn" data-preset="digits">🔢 Digits 0 to 9 Unsorted</button>
         <button class="preset-btn" data-preset="random">🎲 Random (10)</button>
-        <button class="preset-btn" data-preset="reversed">📉 Reversed / Worst Case</button>
-        <button class="preset-btn" data-preset="nearly">📈 Nearly Sorted</button>
-        <button class="preset-btn" data-preset="duplicates">🪞 With Duplicates</button>
+        <button class="preset-btn" data-preset="reversed">📉 Reversed</button>
       </div>
 
       <!-- Algorithm and Play Controls -->
@@ -880,14 +880,14 @@
       btn.addEventListener('click', () => {
         const type = btn.getAttribute('data-preset');
         let arr = [];
-        if (type === 'random') {
-          arr = Array.from({ length: 8 }, () => Math.floor(Math.random() * 88) + 10);
+        if (type === 'phone') {
+          arr = [8, 2, 0, 8, 3, 6, 3, 2, 8, 7];
+        } else if (type === 'digits') {
+          arr = [9, 3, 7, 0, 8, 2, 5, 1, 4, 6];
+        } else if (type === 'random') {
+          arr = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10));
         } else if (type === 'reversed') {
-          arr = [95, 84, 62, 47, 31, 26, 18, 11];
-        } else if (type === 'nearly') {
-          arr = [11, 18, 26, 47, 31, 62, 84, 95];
-        } else if (type === 'duplicates') {
-          arr = [42, 17, 42, 8, 91, 17, 63, 8];
+          arr = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
         }
         arrayInput.value = arr.join(', ');
         initialArray = arr;
@@ -901,3 +901,4 @@
   </script>
 </body>
 </html>
+
